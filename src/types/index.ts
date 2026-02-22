@@ -2,7 +2,7 @@
 export type TaskStatus = 'pending' | 'in-progress' | 'completed';
  
 export interface Task {
-   id: string;
+  id: string;
   title: string;
   description: string;
   status: TaskStatus;
@@ -10,10 +10,16 @@ export interface Task {
   dueDate: string;
 }
  
+export interface FormProps {
+   title: string;
+  description: string;
+  status: TaskStatus;
+  priority: 'low' | 'medium' | 'high';
+  dueDate: string;
+}
 
 export interface TaskFormProps {
   onAddTask: (
-    id: string,
     title: string,
     description: string,
     status: TaskStatus,

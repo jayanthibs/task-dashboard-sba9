@@ -17,7 +17,7 @@ function TaskItem({ task, onStatusChange, onDelete }: TaskItemProps){
                 <div>
                     <div>
                         
-                        <h3>{task.id} - {task.title} </h3>
+                        <h3>{task.id}-{task.title} </h3>
                         <p>{task.description}</p>
                     </div>
                     <div>

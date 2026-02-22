@@ -8,7 +8,7 @@ function TaskList({ tasks, onStatusChange, onDelete }: TaskListProps){
         onStatusChange(taskId,taskStatus);
     }
 
-    function handleDelete (taskId: string) {
+    function handleDelete (taskId: string ) {
         onDelete(taskId);
     }
 

@@ -1,10 +1,9 @@
-import type { Task } from "../../types";
+import type { FormProps } from "../../types";
 import { useState } from "react";
 import type { TaskFormProps } from "../../types";
 
 function TaskForm({ onAddTask }: TaskFormProps) {
-  const [formData, setFormData] = useState<Task>({
-    id: "",
+  const [formData, setFormData] = useState<FormProps>({
     title: "",
     description: "",
     status: "pending",
@@ -15,7 +14,6 @@ function TaskForm({ onAddTask }: TaskFormProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     onAddTask(
-      formData.id,
       formData.title,
       formData.description,
       formData.status,
@@ -24,7 +22,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
     );
     
     setFormData({
-      id: "",
+      
       title: "",
       description: "",
       status: "pending",
@@ -55,16 +53,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
         className="flex flex-col gap-[10px] bg-white  items-center w-150 m-auto mt-7 rounded-2xl "
       >
        
-          <label htmlFor="id" >Id:</label>
-          <input
-            type="text"
-            id="id"
-            name="id"
-            value={formData.id}
-            onChange={handleChange}
-            className="border-1 w-70 rounded-md"
-          />
-       
+        
        
           <label htmlFor="title">Title:</label>
           <input
