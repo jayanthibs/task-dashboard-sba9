@@ -16,7 +16,7 @@ function TaskList({ tasks, onStatusChange, onDelete }: TaskListProps){
 
     return (
         <>
-        <h1>Tasklist:</h1>
+        <h1 className="font-semibold">Tasks:</h1>
             {taskElement}
         </>
     )

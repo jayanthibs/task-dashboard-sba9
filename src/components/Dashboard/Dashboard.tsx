@@ -82,41 +82,87 @@ function Dashboard() {
   };
 
   return (
-    <div className="bg-indigo-200 min-h-screen  ">
-      <h1 className="text-center text-4xl p-8 font-semibold">Task Dashboard</h1>
+    // <div className="bg-indigo-200 min-h-screen  ">
+    //   <h1 className="text-center text-4xl p-8 font-semibold">Task Dashboard</h1>
+
+    //   <button
+    //     className="flex m-auto border-2 rounded-md text-bold p-2"
+    //     onClick={() => setShowForm(true)}
+    //   >
+    //     Add New Task
+    //   </button>
+    //   {showForm && <TaskForm onAddTask={handleAddTask} />}
+
+    //   <TaskFilter onFilterChange={handleFilterChange} />
+
+    //   <label htmlFor="sort">Sorting</label>
+    //   <select
+    //     defaultValue="Sort By"
+    //     value={sortBy}
+    //     onChange={handleSort}
+    //     className="border-1 rounded-md p-2"
+    //   >
+    //     <option value="">Sort By</option>
+    //     <option value="dueDate">dueDate</option>
+    //     <option value="title">title</option>
+    //   </select>
+
+    //   <p>Total Tasks:{stats.total}</p>
+    //   <p>Completed:{stats.completed}</p>
+    //   <p>In progress:{stats.inprogress}</p>
+    //   <p>Pending:{stats.pending}</p>
+
+    //   <TaskList
+    //     tasks={sortedTasks}
+    //     onStatusChange={handleStatusChange}
+    //     onDelete={handleDelete}
+    //   />
+    // </div>
+
+     <div className="bg-indigo-200 min-h-screen p-6 flex flex-col items-center gap-6">
+      <h1 className="text-4xl font-semibold text-center">Task Dashboard</h1>
 
       <button
-        className="flex m-auto border-2 rounded-md text-bold p-2"
+        className="px-4 py-2 border-2 rounded-md font-bold hover:bg-indigo-300 transition"
         onClick={() => setShowForm(true)}
       >
         Add New Task
       </button>
+
       {showForm && <TaskForm onAddTask={handleAddTask} />}
 
       <TaskFilter onFilterChange={handleFilterChange} />
 
-      <label htmlFor="sort">Sorting</label>
-      <select
-        defaultValue="Sort By"
-        value={sortBy}
-        onChange={handleSort}
-        className="border-1 rounded-md p-2"
-      >
-        <option value="">Sort By</option>
-        <option value="dueDate">dueDate</option>
-        <option value="title">title</option>
-      </select>
+      <div className="flex flex-col gap-2 items-center">
+        <label htmlFor="sort" className=" font-bold">
+          Sort:
+        </label>
+        <select
+          id="sort"
+          value={sortBy}
+          onChange={handleSort}
+          className="px-2 py-1 border-1 rounded-md font-semibold"
+        >
+          <option value="">Sort By</option>
+          <option value="dueDate">Due Date</option>
+          <option value="title">Title</option>
+        </select>
+      </div>
 
-      <p>Total Tasks:{stats.total}</p>
-      <p>Completed:{stats.completed}</p>
-      <p>In progress:{stats.inprogress}</p>
-      <p>Pending:{stats.pending}</p>
+      <div className="flex gap-4 text-sm font-semibold">
+        <p>Total Tasks: {stats.total}</p>
+        <p>Completed: {stats.completed}</p>
+        <p>In Progress: {stats.inprogress}</p>
+        <p>Pending: {stats.pending}</p>
+      </div>
 
-      <TaskList
-        tasks={sortedTasks}
-        onStatusChange={handleStatusChange}
-        onDelete={handleDelete}
-      />
+      <div className="flex flex-col gap-4 w-full max-w-md">
+        <TaskList
+          tasks={sortedTasks}
+          onStatusChange={handleStatusChange}
+          onDelete={handleDelete}
+        />
+      </div>
     </div>
   );
 }

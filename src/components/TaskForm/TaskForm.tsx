@@ -20,9 +20,8 @@ function TaskForm({ onAddTask }: TaskFormProps) {
       formData.priority,
       formData.dueDate,
     );
-    
+
     setFormData({
-      
       title: "",
       description: "",
       status: "pending",
@@ -52,73 +51,67 @@ function TaskForm({ onAddTask }: TaskFormProps) {
         onSubmit={handleSubmit}
         className="flex flex-col gap-[10px] bg-white  items-center w-150 m-auto mt-7 rounded-2xl "
       >
-       
-        
-       
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="border-1 w-70 rounded-md"
-          />
-       
-       
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="border-1 h-30 w-70 rounded-md"
-          />
-       
-        
-          <label htmlFor="status">Status:</label>
-          <select
-            onChange={handleChange}
-            id="status"
-            name="status"
-            value={formData.status}
-            className="border-1 w-70 rounded-md"
-          >
-            <option value="pending">Pending</option>
-            <option value="in-progress">In Progress</option>
-            <option value="completed">Completed</option>
-          </select>
-       
-       
-          <label htmlFor="priority">Priority:</label>
-          <select
-            value={formData.priority}
-            id="priority"
-            name="priority"
-            onChange={handleChange}
-            className="border-1 w-70 rounded-md"
-          >
-            <option value="low">low</option>
-            <option value="medium">medium</option>
-            <option value="high">high</option>
-          </select>
-        
-        
-          <label htmlFor="dueDate">Due Date:</label>
-          <input
-            type="date"
-            id="dueDate"
-            name="dueDate"
-            value={formData.dueDate}
-            onChange={handleChange}
-            className="border-1 w-70 rounded-md"
-          />
-      
-        
-          <button type="submit" className="border-1 mb-5 w-70 rounded-md bg-indigo-600">
-            Add Task
-          </button>
-        
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          className="border-1 w-70 rounded-md"
+        />
+
+        <label htmlFor="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          className="border-1 h-30 w-70 rounded-md"
+        />
+
+        <label htmlFor="status">Status:</label>
+        <select
+          onChange={handleChange}
+          id="status"
+          name="status"
+          value={formData.status}
+          className="border-1 w-70 rounded-md"
+        >
+          <option value="pending">Pending</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <label htmlFor="priority">Priority:</label>
+        <select
+          value={formData.priority}
+          id="priority"
+          name="priority"
+          onChange={handleChange}
+          className="border-1 w-70 rounded-md"
+        >
+          <option value="low">low</option>
+          <option value="medium">medium</option>
+          <option value="high">high</option>
+        </select>
+
+        <label htmlFor="dueDate">Due Date:</label>
+        <input
+          type="date"
+          id="dueDate"
+          name="dueDate"
+          value={formData.dueDate}
+          onChange={handleChange}
+          className="border-1 w-70 rounded-md"
+        />
+
+        <button
+          type="submit"
+          className="border-1 mb-5 w-70 rounded-md bg-indigo-600 font-semibold text-lg"
+        >
+          Add Task
+        </button>
       </form>
     </>
   );
