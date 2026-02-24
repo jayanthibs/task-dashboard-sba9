@@ -1,9 +1,10 @@
-import type { FormProps } from "../../types";
+import type { Task } from "../../types";
 import { useState } from "react";
 import type { TaskFormProps } from "../../types";
+import { validateTask } from "../../utils/taskUtils";
 
 function TaskForm({ onAddTask }: TaskFormProps) {
-  const [formData, setFormData] = useState<FormProps>({
+  const [formData, setFormData] = useState<Omit<Task, "id">>({
     title: "",
     description: "",
     status: "pending",
@@ -11,15 +12,21 @@ function TaskForm({ onAddTask }: TaskFormProps) {
     dueDate: "",
   });
 
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    dueDate: "",
+  });
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onAddTask(
-      formData.title,
-      formData.description,
-      formData.status,
-      formData.priority,
-      formData.dueDate,
-    );
+
+    const { errors, isValid } = validateTask(formData);
+    setErrors(errors);
+
+    if (!isValid) return;
+
+    onAddTask(formData);
 
     setFormData({
       title: "",
@@ -60,6 +67,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
           onChange={handleChange}
           className="border-1 w-70 rounded-md"
         />
+        {errors.title && <span className="text-red-500">{errors.title}</span>}
 
         <label htmlFor="description">Description:</label>
         <textarea
@@ -69,6 +77,9 @@ function TaskForm({ onAddTask }: TaskFormProps) {
           onChange={handleChange}
           className="border-1 h-30 w-70 rounded-md"
         />
+        {errors.description && (
+          <span className="text-red-500">{errors.description}</span>
+        )}
 
         <label htmlFor="status">Status:</label>
         <select
@@ -105,6 +116,7 @@ function TaskForm({ onAddTask }: TaskFormProps) {
           onChange={handleChange}
           className="border-1 w-70 rounded-md"
         />
+        {errors.dueDate && <span className="text-red-500">{errors.dueDate}</span>}
 
         <button
           type="submit"
