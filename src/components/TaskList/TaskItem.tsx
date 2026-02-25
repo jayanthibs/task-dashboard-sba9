@@ -1,5 +1,7 @@
 import type { ChangeEvent } from "react";
 import type { TaskItemProps, TaskStatus } from "../../types";
+import { TrashIcon } from "@heroicons/react/16/solid";
+import { PencilIcon } from "@heroicons/react/16/solid";
 
 function TaskItem({ task, onStatusChange, onDelete, onEdit }: TaskItemProps) {
   function handleStatusChange(e: ChangeEvent<HTMLSelectElement>) {
@@ -42,14 +44,15 @@ function TaskItem({ task, onStatusChange, onDelete, onEdit }: TaskItemProps) {
             onClick={handleEdit}
             className="edit-btn font-medium cursor-pointer hover:text-blue-700 text-blue-500"
           >
-            Edit
+            <PencilIcon className="h-5 w-5"/>
           </button>
 
           <button
             onClick={handleDelete}
             className="delete-btn font-medium cursor-pointer hover:text-red-700 text-red-500"
           >
-            Delete
+            <TrashIcon className="h-5 w-5" />
+           
           </button>
         </div>
       </div>
