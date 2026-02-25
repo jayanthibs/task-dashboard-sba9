@@ -31,9 +31,9 @@ function TaskItem({ task, onStatusChange, onDelete, onEdit }: TaskItemProps) {
         {/* Actions */}
         <div className="task-actions flex items-center gap-2">
           <select
-            defaultValue={task.status}
+            value={task.status}
             onChange={handleStatusChange}
-            className={`status ${task.status} px-2 py-1 rounded-[6px] border border-gray-300 text-sm`}
+            className={`status px-2 py-1 rounded-[6px] border border-gray-300 text-sm`}
           >
             <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
