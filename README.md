@@ -191,3 +191,17 @@ Includes:
  - validateTask(task)
  - exportTasks(tasks)
  - importTasks(event, setTasks)
+
+ ## Reflections:
+
+- How you implemented React and TypeScript features
+
+I built the project using React functional components and hooks like useState to manage tasks and form data, and useEffect to save tasks in localStorage and handle side effects. I passed data and functions between components using props to keep the app organized. With TypeScript, I created interfaces and types to define the structure of a task and component props, which helped prevent errors and made the code more reliable and easier to maintain.
+
+- The challenges you encountered and how you overcame them
+
+One of the main challenges I faced was managing state between multiple components, especially when handling editing and filtering tasks. I solved this by lifting the state up to the Dashboard component and passing data and functions down through props. Another challenge was handling TypeScript errors when defining task types and props. I overcame this by creating clear interfaces and using proper types like union types and utility types (Omit). I also faced issues with keeping tasks saved after refresh, which I fixed by using useEffect with localStorage to persist the data.
+
+- Your approach to component composition and state management
+
+I structured the app with small, reusable components, each handling a single responsibility. The main state (tasks, filters, editing) is kept in the Dashboard and passed down via props. I used useState for local state and useEffect for side effects like saving to localStorage, keeping the data flow predictable and components reusable.
