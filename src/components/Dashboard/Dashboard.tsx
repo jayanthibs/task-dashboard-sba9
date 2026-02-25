@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import type { Task } from "../../types";
-import type { TaskStatus } from "../../types";
+import type { Task, TaskStatus } from "../../types";
 import TaskList from "../TaskList/TaskList";
+import TaskForm from "../TaskForm/TaskForm";
+import TaskFilter from "../TaskFilter/TaskFilter";
 import { sortTasks, exportTasks, importTasks } from "../../utils/taskUtils";
 import type { SortType } from "../../utils/taskUtils";
-
-import TaskFilter from "../TaskFilter/TaskFilter";
-import TaskForm from "../TaskForm/TaskForm";
 
 type Filter = {
   status?: TaskStatus | "";
@@ -14,38 +12,29 @@ type Filter = {
 };
 
 function Dashboard() {
-  // const [tasks, setTasks] = useState<Task[]>([]);
-  const [filters, setFilters] = useState({ status: "", priority: "" });
-  const [showForm, setShowForm] = useState(false);
-  const [sortBy, setSortBy] = useState<SortType>("");
-
   const [tasks, setTasks] = useState<Task[]>(() => {
     const stored = localStorage.getItem("tasks");
     return stored ? JSON.parse(stored) : [];
   });
+
+  const [showForm, setShowForm] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [filters, setFilters] = useState<Filter>({ status: "", priority: "" });
+  const [sortBy, setSortBy] = useState<SortType>("");
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
   function handleAddTask(taskData: Omit<Task, "id">) {
-    const newTask: Task = {
-      id: Date.now().toString(), // unique ID
-      ...taskData,
-    };
+    const newTask: Task = { id: Date.now().toString(), ...taskData };
     setTasks((prev) => [...prev, newTask]);
     setShowForm(false);
   }
 
-  function handleStatusChange(taskId: string, taskStatus: TaskStatus) {
+  function handleEditTask(updatedTask: Task) {
     setTasks((prev) =>
-      prev.map((task) => {
-        if (task.id === taskId) {
-          return { ...task, status: taskStatus };
-        } else {
-          return task;
-        }
-      }),
+      prev.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
     );
   }
 
@@ -53,11 +42,16 @@ function Dashboard() {
     setTasks((prev) => prev.filter((task) => task.id !== taskId));
   }
 
+  function handleStatusChange(taskId: string, taskStatus: TaskStatus) {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, status: taskStatus } : task,
+      ),
+    );
+  }
+
   function handleFilterChange(newFilters: Filter) {
-    setFilters((prev) => ({
-      ...prev,
-      ...newFilters,
-    }));
+    setFilters((prev) => ({ ...prev, ...newFilters }));
   }
 
   const filteredTasks = tasks.filter((task) => {
@@ -69,15 +63,11 @@ function Dashboard() {
   const sortedTasks =
     sortBy === "" ? filteredTasks : sortTasks(filteredTasks, sortBy);
 
-  function handleSort(event: React.ChangeEvent<HTMLSelectElement>) {
-    setSortBy(event.target.value as "title" | "dueDate" | "");
-  }
-
   const stats = {
     total: tasks.length,
-    completed: tasks.filter((task) => task.status === "completed").length,
-    inprogress: tasks.filter((task) => task.status === "in-progress").length,
-    pending: tasks.filter((task) => task.status === "pending").length,
+    completed: tasks.filter((t) => t.status === "completed").length,
+    inprogress: tasks.filter((t) => t.status === "in-progress").length,
+    pending: tasks.filter((t) => t.status === "pending").length,
   };
 
   return (
@@ -86,32 +76,54 @@ function Dashboard() {
 
       <button
         className="px-4 py-2 border-2 rounded-md font-bold hover:bg-indigo-300 transition"
-        onClick={() => setShowForm(true)}
+        onClick={() => {
+          setEditingTask(null);
+          setShowForm(true);
+        }}
       >
         Add New Task
       </button>
 
-      {showForm && <TaskForm onAddTask={handleAddTask} />}
+      {showForm && (
+        <TaskForm
+          onAddTask={handleAddTask}
+          taskToEdit={editingTask || undefined}
+          onEditTask={(task) => {
+            handleEditTask(task);
+            setEditingTask(null);
+            setShowForm(false);
+          }}
+          onClose={() => {
+            setEditingTask(null);
+            setShowForm(false);
+          }}
+        />
+      )}
 
       <TaskFilter onFilterChange={handleFilterChange} />
 
-      {/* export */}
-      <button onClick={() => exportTasks(tasks)} className="border-1 rounded-lg p-2">
+      <button
+        onClick={() => exportTasks(tasks)}
+        className="bg-indigo-600 text-white px-4 py-2 rounded"
+      >
         Export Tasks
       </button>
 
-      {/* import */}
-      <label htmlFor="import-file" className="border-1 rounded-lg p-2">
+      <button
+        type="button"
+        onClick={() => document.getElementById("import-file")?.click()}
+        className="bg-indigo-600 text-white px-4 py-2 rounded"
+      >
         Import Tasks
-      </label>
+      </button>
+
       <input
         id="import-file"
         type="file"
         accept="application/json"
         onChange={(e) => importTasks(e, setTasks)}
-        className="border-1 rounded-lg p-2"
+        className="hidden"
       />
-
       <div className="flex flex-col gap-2 items-center">
         <label htmlFor="sort" className=" font-bold">
           Sort:
@@ -119,7 +131,9 @@ function Dashboard() {
         <select
           id="sort"
           value={sortBy}
-          onChange={handleSort}
+          onChange={(e) =>
+            setSortBy(e.target.value as "title" | "dueDate" | "")
+          }
           className="px-2 py-1 border-1 rounded-md font-semibold"
         >
           <option value="">Sort By</option>
@@ -140,9 +154,14 @@ function Dashboard() {
           tasks={sortedTasks}
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}
+          onEdit={(task) => {
+            setEditingTask(task);
+            setShowForm(true);
+          }}
         />
       </div>
     </div>
   );
 }
+
 export default Dashboard;

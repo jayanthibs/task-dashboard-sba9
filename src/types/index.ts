@@ -12,11 +12,15 @@ export interface Task {
 
 export interface TaskFormProps {
   onAddTask: (task: Omit<Task, "id">) => void;
+  taskToEdit?: Task;                     
+  onEditTask?: (task: Task) => void;     
+  onClose?: () => void;                   
 }
 export interface TaskListProps {
   tasks: Task[];
   onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
   onDelete: (taskId: string) => void;
+  onEdit: (task: Task) => void; 
 }
 
 // types/index.ts
@@ -24,6 +28,7 @@ export interface TaskItemProps {
   task: Task;
   onStatusChange: (taskId: string, newStatus: TaskStatus) => void;
   onDelete: (taskId: string) => void;
+  onEdit: (task: Task) => void; 
 }
 
 // types/index.ts
