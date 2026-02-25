@@ -17,7 +17,7 @@ function TaskItem({ task, onStatusChange, onDelete, onEdit }: TaskItemProps) {
   }
 
   return (
-    <div className="task-card p-4 mb-2 w-[500px] bg-white rounded-[12px] border border-gray-300 shadow-sm hover:shadow-md transition-shadow">
+    <div className="task-card p-4 mb-2 w-full max-w-[500px] bg-white rounded-[12px] border border-gray-300 shadow-sm hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="task-header flex justify-between items-start">
         {/* Title + Description */}
