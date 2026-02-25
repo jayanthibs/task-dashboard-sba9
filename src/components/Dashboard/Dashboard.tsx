@@ -7,13 +7,14 @@ import { sortTasks, exportTasks, importTasks } from "../../utils/taskUtils";
 import type { SortType } from "../../utils/taskUtils";
 import { ArrowDownTrayIcon } from "@heroicons/react/16/solid";
 import { ArrowUpOnSquareIcon } from "@heroicons/react/16/solid";
-
+//define type for filter
 type Filter = {
   status?: TaskStatus | "";
   priority?: "low" | "medium" | "high" | "";
 };
 
 function Dashboard() {
+  //useStates for tasks, edit, filter, sort
   const [tasks, setTasks] = useState<Task[]>(() => {
     const stored = localStorage.getItem("tasks");
     return stored ? JSON.parse(stored) : [];
@@ -23,27 +24,27 @@ function Dashboard() {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [filters, setFilters] = useState<Filter>({ status: "", priority: "" });
   const [sortBy, setSortBy] = useState<SortType>("");
-
+  //useEffect for local Storage
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
-
+  //function for adding task
   function handleAddTask(taskData: Omit<Task, "id">) {
     const newTask: Task = { id: Date.now().toString(), ...taskData };
     setTasks((prev) => [...prev, newTask]);
     setShowForm(false);
   }
-
+  //function to edit the task
   function handleEditTask(updatedTask: Task) {
     setTasks((prev) =>
       prev.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
     );
   }
-
+  //function to delete the task
   function handleDelete(taskId: string) {
     setTasks((prev) => prev.filter((task) => task.id !== taskId));
   }
-
+  //function to update the status of the task
   function handleStatusChange(taskId: string, taskStatus: TaskStatus) {
     setTasks((prev) =>
       prev.map((task) =>
@@ -51,20 +52,22 @@ function Dashboard() {
       ),
     );
   }
-
+  //function to handle the filter
   function handleFilterChange(newFilters: Filter) {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   }
-
+  //filtering the tasks based on status and priority
   const filteredTasks = tasks.filter((task) => {
     if (filters.status && task.status !== filters.status) return false;
     if (filters.priority && task.priority !== filters.priority) return false;
     return true;
   });
 
+  //sorting the tasks based on sort by type
   const sortedTasks =
     sortBy === "" ? filteredTasks : sortTasks(filteredTasks, sortBy);
 
+  // statistics of tasks, counting no of tasks and  counting tasks based on the status
   const stats = {
     total: tasks.length,
     completed: tasks.filter((t) => t.status === "completed").length,
@@ -86,6 +89,8 @@ function Dashboard() {
         Add New Task
       </button>
 
+      {/* rendering TaskForm */}
+
       {showForm && (
         <TaskForm
           onAddTask={handleAddTask}
@@ -101,27 +106,29 @@ function Dashboard() {
           }}
         />
       )}
-
+      {/* rendering TaskFilter */}
       <TaskFilter onFilterChange={handleFilterChange} />
 
+      {/* export tasks */}
       <button
         onClick={() => exportTasks(tasks)}
         className="bg-indigo-600 text-white px-4 py-2 rounded"
       >
         <div className="flex gap-[10px]">
-        <ArrowDownTrayIcon className="h-5 w-5"/>
-        Export Tasks
+          <ArrowDownTrayIcon className="h-5 w-5" />
+          Export Tasks
         </div>
       </button>
 
+      {/* import tasks */}
       <button
         type="button"
         onClick={() => document.getElementById("import-file")?.click()}
         className="bg-indigo-600 text-white px-4 py-2 rounded"
       >
         <div className="flex gap-[10px]">
-        <ArrowUpOnSquareIcon className="h-5 w-5"/>
-        Import Tasks
+          <ArrowUpOnSquareIcon className="h-5 w-5" />
+          Import Tasks
         </div>
       </button>
 
@@ -132,6 +139,9 @@ function Dashboard() {
         onChange={(e) => importTasks(e, setTasks)}
         className="hidden"
       />
+
+      {/* rendering sorting */}
+
       <div className="flex flex-col gap-2 items-center">
         <label htmlFor="sort" className=" font-bold">
           Sort:
@@ -150,13 +160,15 @@ function Dashboard() {
         </select>
       </div>
 
+      {/* rendering stats */}
       <div className="flex gap-4 text-sm font-semibold">
         <p>Total Tasks: {stats.total}</p>
         <p>Completed: {stats.completed}</p>
         <p>In Progress: {stats.inprogress}</p>
         <p>Pending: {stats.pending}</p>
       </div>
-
+      
+      {/* rendering TaskList */}
       <div className="flex flex-col gap-4 w-full max-w-md">
         <TaskList
           tasks={sortedTasks}
