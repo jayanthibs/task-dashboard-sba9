@@ -15,14 +15,14 @@ function TaskFilter({ onFilterChange }: TaskFilterProps) {
   }
   
   return (
-    <div className="flex gap-[100px] mt-20 justify-center font-bold">
+    <div className="flex gap-[100px] justify-center font-bold">
     <div>
       <h1 className="p-1">Filter by Status:</h1>
       <select
        
         onChange={handleStatusChange}
         defaultValue="All Statuses"
-        className="border-1 rounded-md p-2"
+        className="border-1 rounded-md p-1"
       >
         <option value="" >All Statuses</option>
         <option value="pending">Pending</option>
@@ -32,7 +32,7 @@ function TaskFilter({ onFilterChange }: TaskFilterProps) {
       </div>
       <div>
        <h1 className="p-1">Filter by Priority:</h1>
-      <select defaultValue="All Priorities" onChange={handlePriorityChange}  className="border-1 rounded-md p-2">
+      <select defaultValue="All Priorities" onChange={handlePriorityChange}  className="border-1 rounded-md p-1">
                 <option value="">All Priorities</option>
         <option value="low">low</option>
         <option value="medium">medium</option>
